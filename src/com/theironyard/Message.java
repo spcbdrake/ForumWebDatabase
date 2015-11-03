@@ -9,6 +9,10 @@ public class Message {
     String username;
     String text;
 
+    public Message() {
+
+    }
+
     public Message(int id, int replyId, String username, String text) {
         this.id = id;
         this.replyId = replyId;

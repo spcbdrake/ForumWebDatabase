@@ -33,5 +33,15 @@ public class MainTest {
 
         assertTrue(user != null);
     }
+    @Test
+    public void testMessage() throws SQLException {
+        Connection conn = startConnection();
+        Main.insertUser(conn, "Alice", "");
+        Main.insertMessage(conn, 1, -1, "Hello, world!");
+        Message message = Main.selectMessage(conn, 1);
+        endConnection(conn);
+
+        assertTrue(message != null);
+    }
 
 }
