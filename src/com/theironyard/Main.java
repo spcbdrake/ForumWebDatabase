@@ -6,6 +6,7 @@ import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 import sun.text.resources.no.CollationData_no;
 
+import javax.lang.model.type.ArrayType;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +61,23 @@ public class Main {
             message.text = results.getString("messages.text");
         }
         return message;
+    }
+
+    public static ArrayList<Message> selectReplies(Connection conn, int replyId) throws SQLException {
+        ArrayList<Message> replies = new ArrayList();
+        PreparedStatement stmt= conn.prepareStatement("SELECT * FROM messages INNER JOIN users ON messages.user_id = users.id WHERE messages.reply_id = ?");
+        stmt.setInt(1, replyId);
+        ResultSet results = stmt.executeQuery();
+        while (results.next()) {
+            Message message = new Message();
+            message = new Message();
+            message.id = results.getInt("messages.id");
+            message.replyId = results.getInt("messages.reply_id");
+            message.username = results.getString("users.name");
+            message.text = results.getString("messages.text");
+            replies.add(message);
+        }
+        return replies;
     }
 
     public static void main(String[] args) throws SQLException {
